@@ -1,16 +1,52 @@
-## Hi there 👋
-
-<!--
-**cbfss/cbfss** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+src/
+├── components/
+│   └── common/│       
+│       ├── DataTable.jsx
+│       └── ... (other reusable components)
+│
+├── hooks/
+│   └── useTheme.js 
+│
+├── layouts/
+│   ├── MainLayout.jsx
+│   ├── AuthLayout.jsx
+│   └── 
+│
+├── pages/
+│   ├── 
+│   │  
+│   │
+│   ├── customer-data/
+│   │   ├── address-type/
+│   │   │   ├── components/
+│   │   │   │   ├── AddressTypeFilters.jsx
+│   │   │   │   ├── InlineAddressTypeForm.jsx
+│   │   │   │   └── AddressTypeModal.jsx
+│   │   │   ├── hooks/
+│   │   │   │   ├── useAddressTypeFilters.js
+│   │   │   │   └── useAddressTypeRTK.js
+│   │   │   └── AddressTypePage.jsx (main page component)
+│   │   │
+│   │   │   
+│   │   │
+│   │   └──
+│   │
+│   │
+├── services/
+│   ├── customer/
+│   │   ├── addressTypeApi.js
+│   │   ├── addressTypeService.js
+│   │   └── ... (other customer-related services)
+│   │
+│   │
+│   └── menu/
+│       └── menuService.js
+│
+├── store/
+│   ├── slices/
+│   │   ├── customer/
+│   │   │   └── addressTypeSlice.js
+│   │
+│   └── ... (store configuration files)
+│
+└── router.jsx

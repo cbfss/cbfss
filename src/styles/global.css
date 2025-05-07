@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+@layer base {
+  /* Any base styles */
+
+}
+
+@layer components {
+  /* Custom component styles */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+@layer utilities {
+  /* Custom utilities */
+}
+
