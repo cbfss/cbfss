@@ -1,6 +1,6 @@
 // src/services/customer-management/customerStatusService.js
 // Mock customer status data to match the database structure
-const mockCustomerStatuses = [
+let mockCustomerStatuses = [
   { 
     status_id: 1, 
     tenant_id: 1,
@@ -145,7 +145,7 @@ const customerStatusService = {
     
     // In a real app, this would be a POST request
     // Here we just add to our mock data
-    mockCustomerStatuses.push(newCustomerStatus);
+    mockCustomerStatuses = [...mockCustomerStatuses, newCustomerStatus];
     
     return newCustomerStatus;
   },
@@ -189,7 +189,9 @@ const customerStatusService = {
     
     // In a real app, this would be a PUT request
     // Here we just update our mock data
-    mockCustomerStatuses[index] = updatedCustomerStatus;
+    const updatedStatuses = [...mockCustomerStatuses];
+    updatedStatuses[index] = updatedCustomerStatus;
+    mockCustomerStatuses = updatedStatuses;
     
     return updatedCustomerStatus;
   },
@@ -205,8 +207,18 @@ const customerStatusService = {
       throw new Error('Customer status not found');
     }
     
-    // Toggle status
-    mockCustomerStatuses[index].is_active = !mockCustomerStatuses[index].is_active;
+    // Create a new status object with toggled is_active property
+    const updatedStatus = {
+      ...mockCustomerStatuses[index],
+      is_active: !mockCustomerStatuses[index].is_active,
+      updated_by: 2, // In real app would be from current user
+      updated_at: new Date().toISOString()
+    };
+    
+    // Create a new array with the updated status
+    const updatedStatuses = [...mockCustomerStatuses];
+    updatedStatuses[index] = updatedStatus;
+    mockCustomerStatuses = updatedStatuses;
     
     return { success: true };
   }

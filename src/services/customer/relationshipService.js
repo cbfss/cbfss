@@ -1,4 +1,4 @@
-const mockRelationships = [
+let mockRelationships = [
     { relationship_id: 1, relationship: 'Father', is_active: true, tenant_id: 1 },
     { relationship_id: 2, relationship: 'Mother', is_active: true, tenant_id: 1 },
     { relationship_id: 3, relationship: 'Spouse', is_active: true, tenant_id: 1 },
@@ -75,8 +75,8 @@ const mockRelationships = [
       
       // In a real app, this would be a POST request
       // Here we just add to our mock data
-      mockRelationships.push(newRelationship);
-      
+      mockRelationships = [...mockRelationships, newRelationship];
+  
       return newRelationship;
     },
     
@@ -102,15 +102,9 @@ const mockRelationships = [
         throw new Error('A relationship with this name already exists');
       }
       
-      // Update relationship
-      const updatedRelationship = {
-        ...mockRelationships[index],
-        relationship: relationshipData.relationship
-      };
-      
-      // In a real app, this would be a PUT request
-      // Here we just update our mock data
-      mockRelationships[index] = updatedRelationship;
+      const updatedRelationships = [...mockRelationships];
+      updatedRelationships[index] = updatedRelationship;
+      mockRelationships = updatedRelationships;
       
       return updatedRelationship;
     },
@@ -126,8 +120,15 @@ const mockRelationships = [
         throw new Error('Relationship not found');
       }
       
-      // Toggle status
-      mockRelationships[index].is_active = !mockRelationships[index].is_active;
+      const updatedRelationship = {
+        ...mockRelationships[index],
+        is_active: !mockRelationships[index].is_active
+      };
+      
+      // Create a new array with the updated relationship
+      const updatedRelationships = [...mockRelationships];
+      updatedRelationships[index] = updatedRelationship;
+      mockRelationships = updatedRelationships;
       
       return { success: true };
     }

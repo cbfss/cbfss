@@ -126,7 +126,7 @@ const Sidebar = () => {
         <div className="flex items-center justify-center">
           {isSidebarOpen ? (
             <div className="flex items-center justify-center w-24 h-20">
-              <img src={intel} alt="Logo" />
+              <img className="rounded-full" src={intel} alt="Logo" />
             </div>
           ) : (
             <div className="w-full flex justify-center p-4">

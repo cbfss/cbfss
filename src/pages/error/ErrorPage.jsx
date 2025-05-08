@@ -11,8 +11,8 @@ const ErrorPage = () => {
   // State for animations and UI
   const [count, setCount] = useState(0);
   const [pulseEffect, setPulseEffect] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('Page Not Found');
-  const [errorCode, setErrorCode] = useState(405);
+  const [errorMessage, setErrorMessage] = useState('Error');
+  const [errorCode, setErrorCode] = useState(0);
   const [errorDetails, setErrorDetails] = useState('');
   const [codeVisible, setCodeVisible] = useState(false);
   const [particles, setParticles] = useState([]);
@@ -48,24 +48,37 @@ const ErrorPage = () => {
         }
       } else if (error.message) {
         // It's a JS error
-        setErrorMessage('Application Error');
-        setErrorDetails(error.message);
         
         // For routing/navigation errors, typically 404
         if (error.message.includes('No route matches') || error.message.includes('not found')) {
           setErrorCode(404);
           setErrorMessage('Page Not Found');
           setErrorDetails(`The path "${location?.pathname}" does not exist in this application.`);
+        } else {
+          // Other JS errors - show the actual error instead of defaulting to 404
+          setErrorMessage('Application Error');
+          setErrorDetails(error.message);
+          // Use a generic error code like 500 for JS errors that aren't 404s
+          setErrorCode(500);
         }
       } else {
         // Generic error fallback
         setErrorMessage('Unknown Error');
         setErrorDetails('An unexpected error occurred while processing your request.');
+        setErrorCode(500); // Default to 500 for unknown errors
       }
     } else {
-      // Default to 404 if no error is provided
-      setErrorMessage('Page Not Found');
-      setErrorDetails(`The requested path "${location?.pathname}" could not be found.`);
+      // Default to 404 only if we're sure it's a not found error
+      // This might happen if the ErrorPage is rendered directly without an error
+      if (location?.pathname && !location.pathname.startsWith('/dashboard')) {
+        setErrorCode(404);
+        setErrorMessage('Page Not Found');
+        setErrorDetails(`The requested path "${location?.pathname}" could not be found.`);
+      } else {
+        setErrorCode(500);
+        setErrorMessage('Unknown Error');
+        setErrorDetails('An unexpected error occurred.');
+      }
     }
   }, [error, location]);
 

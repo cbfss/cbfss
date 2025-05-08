@@ -6,57 +6,76 @@ import {
   useUpdateAddressTypeMutation,
   useToggleAddressTypeStatusMutation
 } from '../../../../services/customer/addressTypeApi';
+import { useSelector } from 'react-redux';
+import { selectCurrentTenantId } from '../../../../store/slices/customer/addressTypeSlice';
 
 /**
  * Custom hook for interacting with address type RTK Query API
  * Encapsulates API interactions and provides convenient methods
  */
-export const useAddressTypeRTK = (filters = {}) => {
+export const useAddressTypeRTK = () => {
   const [error, setError] = useState(null);
+  const currentTenantId = useSelector(selectCurrentTenantId);
   
-  // Get address types with the provided filters
+  // Get address types
   const {
     data: addressTypes = [],
     isLoading,
     isFetching,
     refetch
-  } = useGetAddressTypesQuery(filters);
+  } = useGetAddressTypesQuery();
   
   // Mutations for modifying data
-  const [addAddressType] = useAddAddressTypeMutation();
-  const [updateAddressType] = useUpdateAddressTypeMutation();
-  const [toggleStatus] = useToggleAddressTypeStatusMutation();
+  const [addAddressTypeMutation] = useAddAddressTypeMutation();
+  const [updateAddressTypeMutation] = useUpdateAddressTypeMutation();
+  const [toggleStatusMutation] = useToggleAddressTypeStatusMutation();
   
   // Wrap mutations with error handling
   const handleAddAddressType = async (data) => {
     try {
-      await addAddressType(data).unwrap();
-      return true;
+      // Add tenant ID to the data
+      const dataWithTenant = {
+        ...data,
+        tenant_id: currentTenantId
+      };
+      
+      const response = await addAddressTypeMutation(dataWithTenant).unwrap();
+      return response;
     } catch (err) {
-      setError(err.message || 'Failed to add address type');
-      return false;
+      console.error('Error adding address type:', err);
+      setError(err.data?.message || err.message || 'Failed to add address type');
+      throw err;
     }
   };
   
   const handleUpdateAddressType = async (id, data) => {
     try {
-      await updateAddressType({ id, ...data }).unwrap();
-      return true;
+      // Add tenant ID to the data
+      const dataWithTenant = {
+        ...data,
+        tenant_id: currentTenantId
+      };
+      
+      const response = await updateAddressTypeMutation({ 
+        id, 
+        ...dataWithTenant 
+      }).unwrap();
+      return response;
     } catch (err) {
-      setError(err.message || 'Failed to update address type');
-      return false;
+      console.error('Error updating address type:', err);
+      setError(err.data?.message || err.message || 'Failed to update address type');
+      throw err;
     }
   };
   
   const handleToggleStatus = async (id) => {
     try {
-      // FIXED: Only pass the ID to the mutation
-      // Let the API and service handle the toggling
-      await toggleStatus(id).unwrap();
-      return true;
+      const response = await toggleStatusMutation(id).unwrap();
+      return response;
     } catch (err) {
-      setError(err.message || 'Failed to toggle status');
-      return false;
+      console.error('Error toggling status:', err);
+      setError(err.data?.message || err.message || 'Failed to toggle status');
+      throw err;
     }
   };
   

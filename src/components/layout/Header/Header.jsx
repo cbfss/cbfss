@@ -37,7 +37,7 @@ const Header = ({ title = "Role Management Dashboard" }) => {
   
   return (
     <header
-      className={` top-0 right-0 h-16 flex items-center justify-end px-4 sm:px-6
+      className={` fixed top-0 right-0 h-16 flex items-center justify-end px-4 sm:px-6
         transition-all duration-300 z-10 ${headerBg}  ${headerBorder}
         ${isSidebarOpen ? 'md:left-64' : 'md:left-20'}
         left-0`}

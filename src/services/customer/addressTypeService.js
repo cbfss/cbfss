@@ -1,6 +1,6 @@
 // src/services/customer/addressTypeService.js
 // Mock address type data
-const mockAddressTypes = [
+let mockAddressTypes = [
     { address_type_id: 1, address_type_name: 'Permanent', is_active: true, tenant_id: 1 },
     { address_type_id: 2, address_type_name: 'Current', is_active: true, tenant_id: 1 },
     { address_type_id: 3, address_type_name: 'Office', is_active: true, tenant_id: 1 },
